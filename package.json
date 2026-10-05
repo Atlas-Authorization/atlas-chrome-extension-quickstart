@@ -1,0 +1,17 @@
+{
+  "name": "atlas-chrome-extension-quickstart",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "MV3 Chrome extension wired to Atlas auth with @atlasauth/chrome-extension.",
+  "scripts": {
+    "build": "esbuild src/background.js src/popup.js --bundle --format=esm --outdir=dist",
+    "watch": "esbuild src/background.js src/popup.js --bundle --format=esm --outdir=dist --watch"
+  },
+  "dependencies": {
+    "@atlasauth/chrome-extension": "^0.2.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.2"
+  }
+}
