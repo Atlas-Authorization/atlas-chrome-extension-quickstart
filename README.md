@@ -13,7 +13,7 @@ A minimal **MV3** Chrome extension authenticated with Atlas, using
   is bearer-wired from the token in `chrome.storage.local`, so a
   `GET /v1/client` reads the session. `client.setToken` / `client.signOut` round
   out the lifecycle.
-- Config lives in **`src/config.js`** (an extension can't read a `.env` at
+- Config lives in **`src/config.ts`** (an extension can't read a `.env` at
   runtime) — set your `publishableKey` + `frontendApi` there.
 
 ### Getting a token
@@ -27,8 +27,8 @@ paste a session JWT to seed the store so you can see the authenticated calls wor
 
 ```sh
 npm install
-# edit src/config.js with your keys
-npm run build        # bundles src/* -> dist/* with esbuild
+# edit src/config.ts with your keys
+npm run build        # typechecks (tsc --noEmit), then bundles src/*.ts -> dist/*.js with esbuild
 ```
 
 Then load it in Chrome: `chrome://extensions` → enable Developer mode → **Load

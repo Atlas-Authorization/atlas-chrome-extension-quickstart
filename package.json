@@ -5,13 +5,18 @@
   "type": "module",
   "description": "MV3 Chrome extension wired to Atlas auth with @atlasauth/chrome-extension.",
   "scripts": {
-    "build": "esbuild src/background.js src/popup.js --bundle --format=esm --outdir=dist",
-    "watch": "esbuild src/background.js src/popup.js --bundle --format=esm --outdir=dist --watch"
+    "build": "tsc --noEmit && esbuild src/background.ts src/popup.ts --bundle --format=esm --outdir=dist",
+    "watch": "esbuild src/background.ts src/popup.ts --bundle --format=esm --outdir=dist --watch",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@atlasauth/chrome-extension": "^0.2.0"
   },
   "devDependencies": {
-    "esbuild": "^0.24.2"
+    "@types/chrome": "^0.3.4",
+    "@types/node": "^26.6.4",
+    "esbuild": "^0.24.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   }
 }

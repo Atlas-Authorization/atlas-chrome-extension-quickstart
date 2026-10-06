@@ -2,22 +2,37 @@
 // background worker via @atlasauth/chrome-extension's `createAtlasClient`, whose
 // `fapi` client is already bearer-wired from the stored session token.
 import { createAtlasClient } from '@atlasauth/chrome-extension';
-import { ATLAS_CONFIG } from './config.js';
+import { ATLAS_CONFIG } from './config';
 
 const client = createAtlasClient({
   publishableKey: ATLAS_CONFIG.publishableKey,
   frontendApi: ATLAS_CONFIG.frontendApi,
 });
 
-const $ = (id) => document.getElementById(id);
-const out = (v) => ($('out').textContent = typeof v === 'string' ? v : JSON.stringify(v, null, 2));
+const $ = <T extends HTMLElement = HTMLElement>(id: string): T => {
+  const el = document.getElementById(id);
+  if (!el) throw new Error(`Missing #${id}`);
+  return el as T;
+};
+const out = (v: unknown): void => {
+  $('out').textContent = typeof v === 'string' ? v : JSON.stringify(v, null, 2);
+};
+
+/** Shape of `GET /v1/client` (only the fields this popup reads). */
+interface ClientView {
+  session?: { id: string } | null;
+  user?: unknown;
+}
 
 // Read the session: a bearer-authenticated GET /v1/client (the stored token is
 // attached automatically by the client's wrapped fetch).
-async function render() {
+async function render(): Promise<void> {
   const token = await client.getToken();
-  if (!token) return out('Signed out. Paste a session token to seed, or wire launchWebAuthFlow.');
-  const res = await client.fapi.get('/v1/client');
+  if (!token) {
+    out('Signed out. Paste a session token to seed, or wire launchWebAuthFlow.');
+    return;
+  }
+  const res = await client.fapi.get<ClientView>('/v1/client');
   out(res.ok ? { user: res.data?.user, sessionId: res.data?.session?.id } : 'Token present but not valid.');
 }
 
@@ -26,7 +41,7 @@ async function render() {
 // here) and `client.setToken(session.sessionToken)`. For this quickstart we let
 // you paste a session token to seed the store.
 $('seed').addEventListener('click', async () => {
-  const token = $('token').value.trim();
+  const token = $<HTMLInputElement>('token').value.trim();
   if (token) await client.setToken(token);
   await render();
 });

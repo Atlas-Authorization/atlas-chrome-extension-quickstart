@@ -5,7 +5,7 @@
 // `chrome.alarms` tick: each wake calls `client.syncSessionToken()`, which
 // refreshes the token if it is near expiry and writes it back to chrome.storage.
 import { createAtlasClient } from '@atlasauth/chrome-extension/background';
-import { ATLAS_CONFIG } from './config.js';
+import { ATLAS_CONFIG } from './config';
 
 const client = createAtlasClient({
   publishableKey: ATLAS_CONFIG.publishableKey,
