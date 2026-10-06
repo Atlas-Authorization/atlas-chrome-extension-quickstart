@@ -5,11 +5,11 @@ A minimal **MV3** Chrome extension authenticated with Atlas, using
 
 ## What's wired
 
-- **`src/background.js`** — the service worker builds the client with
+- **`src/background.ts`** — the service worker builds the client with
   `createAtlasClient({ background: true })` (from `.../background`) and keeps the
   session token fresh on a `chrome.alarms` tick via `client.syncSessionToken()`
   (MV3 workers have no long-lived timer).
-- **`src/popup.js`** — the popup uses `createAtlasClient()`; its `client.fapi`
+- **`src/popup.ts`** — the popup uses `createAtlasClient()`; its `client.fapi`
   is bearer-wired from the token in `chrome.storage.local`, so a
   `GET /v1/client` reads the session. `client.setToken` / `client.signOut` round
   out the lifecycle.
